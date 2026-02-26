@@ -26,6 +26,8 @@ public class ContaCasal {
     private LocalDateTime dataCriacao;
 
     @PrePersist
-    protected void onCreate() {}
+    protected void onCreate() {
         this.dataCriacao = LocalDateTime.now();
+    }
+
 }
