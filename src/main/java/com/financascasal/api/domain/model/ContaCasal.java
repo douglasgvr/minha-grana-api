@@ -3,16 +3,17 @@ package com.financascasal.api.domain.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "tb_conta_casal")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario {
+public class ContaCasal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,13 +22,10 @@ public class Usuario {
     @Column(nullable = false, length = 100)
     private String nome;
 
-    @Column(nullable = false, unique = true, length = 150)
-    private String email;
+    @Column(name = "data_criacao", nullable = false, updatable = false)
+    private LocalDateTime dataCriacao;
 
-    @Column(nullable = false)
-    private String senha;
-
-    @ManyToOne
-    @JoinColumn(name = "conta_casal_id", nullable = false)
-    private ContaCasal contaCasal;
+    @PrePersist
+    protected void onCreate() {}
+        this.dataCriacao = LocalDateTime.now();
 }
