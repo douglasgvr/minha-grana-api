@@ -28,6 +28,6 @@ public class Usuario {
     private String senha;
 
     @ManyToOne
-    @JoinColumn(name = "conta_casal_id", nullable = false)
+    @JoinColumn(name = "conta_casal_id")
     private ContaCasal contaCasal;
 }
