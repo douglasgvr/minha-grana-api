@@ -1,5 +1,6 @@
 package com.financascasal.api.controller;
 
+import com.financascasal.api.domain.dto.UsuarioConviteRequestDTO;
 import com.financascasal.api.domain.dto.UsuarioRequestDTO;
 import com.financascasal.api.domain.model.Usuario;
 import com.financascasal.api.domain.service.UsuarioService;
@@ -26,6 +27,19 @@ public class UsuarioController {
         novoUsuario.setSenha(usuarioRequestDTO.senha());
 
         Usuario usuarioSalvo = usuarioService.salvar(novoUsuario);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
+    }
+
+    @PostMapping("/convite")
+    public ResponseEntity<Usuario> aceitarConvite(@RequestBody UsuarioConviteRequestDTO usuarioConviteRequestDTO) {
+
+        Usuario novoConvidado = new Usuario();
+        novoConvidado.setNome(usuarioConviteRequestDTO.nome());
+        novoConvidado.setEmail(usuarioConviteRequestDTO.email());
+        novoConvidado.setSenha(usuarioConviteRequestDTO.senha());
+
+        Usuario usuarioSalvo = usuarioService.cadastrarConvidado(novoConvidado, usuarioConviteRequestDTO.contaCasalId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
     }
