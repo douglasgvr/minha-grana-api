@@ -2,7 +2,7 @@ package com.financascasal.api.controller;
 
 import com.financascasal.api.domain.dto.TransacaoRequestDTO;
 import com.financascasal.api.domain.model.Transacao;
-import com.financascasal.api.domain.service.TrasicaoService;
+import com.financascasal.api.domain.service.TransacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TransacaoController {
 
-    private final TrasicaoService trasicaoService;
+    private final TransacaoService transacaoService;
 
     @PostMapping
     public ResponseEntity<Transacao> registrar(@RequestBody TransacaoRequestDTO transacaoRequestDTO){
@@ -27,7 +27,7 @@ public class TransacaoController {
         novaTransacao.setTipo(transacaoRequestDTO.tipoTransacao());
         novaTransacao.setDespesaConjunta(transacaoRequestDTO.despesaConjunta());
 
-        Transacao transacaoSalva = trasicaoService.registrar(
+        Transacao transacaoSalva = transacaoService.registrar(
                 novaTransacao,
                 transacaoRequestDTO.usuarioId(),
                 transacaoRequestDTO.contaCasalId()
@@ -36,9 +36,9 @@ public class TransacaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(transacaoSalva);
     }
 
-    @GetMapping
+    @GetMapping("/conta/{contaCasalId}")
     public ResponseEntity<List<Transacao>> buscarExtrato(@PathVariable UUID contaCasalId) {
-        List<Transacao> extrato = trasicaoService.buscarExtratoDaConta(contaCasalId);
+        List<Transacao> extrato = transacaoService.buscarExtratoDaConta(contaCasalId);
         return ResponseEntity.ok(extrato);
     }
 }

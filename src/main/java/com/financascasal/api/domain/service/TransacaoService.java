@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class TrasicaoService {
+public class TransacaoService {
 
     private final TransacaoRepository transacaoRepository;
 
