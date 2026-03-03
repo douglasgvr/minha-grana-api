@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,5 +36,9 @@ public class TrasicaoService {
         transacao.setContaCasal(contaCasal);
 
         return transacaoRepository.save(transacao);
+    }
+
+    public List<Transacao> buscarExtratoDaConta(UUID contaCasalId) {
+        return transacaoRepository.findByContaCasalIdOrderByDataPagamentoDesc(contaCasalId);
     }
 }

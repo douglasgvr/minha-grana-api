@@ -6,10 +6,10 @@ import com.financascasal.api.domain.service.TrasicaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/transacoes")
@@ -34,5 +34,11 @@ public class TransacaoController {
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(transacaoSalva);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Transacao>> buscarExtrato(@PathVariable UUID contaCasalId) {
+        List<Transacao> extrato = trasicaoService.buscarExtratoDaConta(contaCasalId);
+        return ResponseEntity.ok(extrato);
     }
 }
