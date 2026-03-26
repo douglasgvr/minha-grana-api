@@ -1,5 +1,6 @@
 package com.financascasal.api.controller;
 
+import com.financascasal.api.domain.dto.ResumoContaDTO;
 import com.financascasal.api.domain.dto.TransacaoRequestDTO;
 import com.financascasal.api.domain.model.Transacao;
 import com.financascasal.api.domain.service.TransacaoService;
@@ -40,5 +41,13 @@ public class TransacaoController {
     public ResponseEntity<List<Transacao>> buscarExtrato(@PathVariable UUID contaCasalId) {
         List<Transacao> extrato = transacaoService.buscarExtratoDaConta(contaCasalId);
         return ResponseEntity.ok(extrato);
+    }
+
+    @GetMapping("/conta/{contaId}/resumo")
+    public ResponseEntity<ResumoContaDTO> obterResumo(@PathVariable UUID contaId) {
+
+        ResumoContaDTO resumo = transacaoService.obterResumoDaConta(contaId);
+
+        return ResponseEntity.ok(resumo);
     }
 }

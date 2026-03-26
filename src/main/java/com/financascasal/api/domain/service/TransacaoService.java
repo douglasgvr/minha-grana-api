@@ -1,5 +1,6 @@
 package com.financascasal.api.domain.service;
 
+import com.financascasal.api.domain.dto.ResumoContaDTO;
 import com.financascasal.api.domain.model.ContaCasal;
 import com.financascasal.api.domain.model.Transacao;
 import com.financascasal.api.domain.model.Usuario;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,5 +42,24 @@ public class TransacaoService {
 
     public List<Transacao> buscarExtratoDaConta(UUID contaCasalId) {
         return transacaoRepository.findByContaCasalIdOrderByDataPagamentoDesc(contaCasalId);
+    }
+
+    public ResumoContaDTO obterResumoDaConta(UUID contaCasalId) {
+        List<Transacao> transacoes = buscarExtratoDaConta(contaCasalId);
+
+        BigDecimal receitas = BigDecimal.ZERO;
+        BigDecimal despesas = BigDecimal.ZERO;
+
+        for (Transacao transacao : transacoes) {
+            if(transacao.getTipo().name().equals("RECEITA")) {
+                receitas = receitas.add(transacao.getValor());
+            }else {
+                despesas = despesas.add(transacao.getValor());
+            }
+        }
+
+        BigDecimal saldo = receitas.subtract(despesas);
+
+        return new ResumoContaDTO(receitas, despesas, saldo);
     }
 }
